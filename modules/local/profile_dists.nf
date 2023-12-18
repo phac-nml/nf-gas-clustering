@@ -9,8 +9,7 @@ process PROFILE_DISTS{
     container "https://depot.galaxyproject.org/singularity/profile_dists%3A1.0.0--pyh7cba7a3_0"
 
     input:
-    // TODO need to be smarter about mapping against self due to name space collisions
-    tuple val(meta), path(ref_query), path(query)
+    tuple val(meta), path(query)
     val mapping_format
     path(mapping_file)
     path(columns)
@@ -27,11 +26,6 @@ process PROFILE_DISTS{
 
     script:
     def args = ""
-    def ref = ref_query
-    def query_profile = query
-    if(!query){
-        query_profile = ref
-    }
 
     if(mapping_file){
         args = args + "--mapping_file $mapping_file"
@@ -39,23 +33,25 @@ process PROFILE_DISTS{
     if(columns){
         args = args + " --columns $columns"
     }
-    if(params.profile_dists.force){
+    if(params.pd_force){
         args = args + " --force"
     }
-    if(params.profile_dists.skip){
+    if(params.pd_skip){
         args = args + " --skip"
     }
-    if(params.profile_dists.count_missing){
+    if(params.pd_count_missing){
         args = args + " --count_missing"
     }
     // --match_threshold $params.profile_dists.match_thresh \\
     prefix = meta.id
     """
-    profile_dists --query $query_profile --ref $ref $args --outfmt $mapping_format \\
-                --distm $params.profile_dists.distm \\
-                --file_type $params.profile_dists.file_type \\
-                --missing_thresh $params.profile_dists.missing_thresh \\
-                --sample_qual_thresh $params.profile_dists.sample_qual_thresh \\
+    profile_dists --query $query --ref $query \\ 
+                $args \\ 
+                --outfmt $mapping_format \\
+                --distm $params.pd_distm \\
+                --file_type $params.pd_file_type \\
+                --missing_thresh $params.pd_missing_threshold \\
+                --sample_qual_thresh $params.pd_sample_quality_threshold \\
                 --max_mem ${task.memory.toGiga()} \\
                 --cpus ${task.cpus} \\
                 -o ${prefix}_${mapping_format}
