@@ -1,25 +1,25 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
     "$id": "https://raw.githubusercontent.com/phac-nml/iridanextexample/main/assets/schema_input.json",
-    "title": "phac-nml/iridanextexample pipeline - params.input schema",
+    "title": "phac-nml/nf-gas-clustering pipeline - params.input schema",
     "description": "Schema for the file provided with params.input",
     "type": "array",
     "items": {
         "type": "object",
         "properties": {
-            "sample": {
+            "profile": {
                 "type": "string",
                 "pattern": "^\\S+$",
                 "meta": ["id"],
                 "unique": true,
                 "errorMessage": "Sample name must be provided and cannot contain spaces"
             },
-            "profile": {
+            "matrix": {
                 "type": "string",
                 "pattern": "^\\S+\\.(tsv|text|txt)$",
                 "errorMessage": "Invalid path to a distance matrix specified."
             }
         },
-        "required": ["sample", "profile"]
+        "required": ["profile", "matrix"]
     }
 }

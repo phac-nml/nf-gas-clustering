@@ -6,7 +6,9 @@ process PROFILE_DISTS{
     label "process_high"
     tag "Distance Matrix Generation"
 
-    container "https://depot.galaxyproject.org/singularity/profile_dists%3A1.0.0--pyh7cba7a3_0"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/profile_dists%3A1.0.0--pyh7cba7a3_0' :
+        'quay.io/biocontainers/profile_dists:1.0.0--pyh7cba7a3_0' }"
 
     input:
     tuple val(meta), path(query)
@@ -45,9 +47,7 @@ process PROFILE_DISTS{
     // --match_threshold $params.profile_dists.match_thresh \\
     prefix = meta.id
     """
-    profile_dists --query $query --ref $query \\ 
-                $args \\ 
-                --outfmt $mapping_format \\
+    profile_dists --query $query --ref $query $args --outfmt $mapping_format \\
                 --distm $params.pd_distm \\
                 --file_type $params.pd_file_type \\
                 --missing_thresh $params.pd_missing_threshold \\

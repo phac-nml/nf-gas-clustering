@@ -3,7 +3,10 @@
 process GAS_MCLUSTER{
     label "process_high"
     tag "Denovo Clustering"
-    container "https://depot.galaxyproject.org/singularity/genomic_address_service%3A0.1.1--pyh7cba7a3_1"
+
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/genomic_address_service%3A0.1.1--pyh7cba7a3_1' :
+        'quay.io/biocontainers/genomic_address_service:0.1.1--pyh7cba7a3_0' }"
 
     input:
     tuple val(meta), path(dist_matrix)
