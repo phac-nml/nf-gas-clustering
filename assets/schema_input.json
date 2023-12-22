@@ -16,7 +16,7 @@
             },
             "matrix": {
                 "type": "string",
-                "pattern": "^\\S+\\.(tsv|text|txt)$",
+                "pattern": "^\\S+\\.(tsv|text|txt|tab)$",
                 "errorMessage": "Invalid path to a distance matrix specified."
             }
         },
