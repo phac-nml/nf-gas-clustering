@@ -3,7 +3,7 @@
 
 
 nextflow.enable.dsl = 2
-nextflow.enable.moduleBinaries = true
+
 
 // Module imports
 include { PROFILE_DISTS } from "./modules/local/profile_dists.nf"

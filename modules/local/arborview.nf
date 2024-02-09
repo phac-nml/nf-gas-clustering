@@ -1,5 +1,5 @@
 // Inline output tree into ArborView.html
-
+// TODO include versions for python and arbor view when available
 
 
 
@@ -24,7 +24,7 @@ process ARBOR_VIEW {
     script:
     output_value = "${meta.id}_arborview.html"
     """
-    inline_arborview.py -m ${contextual_data} -n ${tree} -o ${output_value}
+    inline_arborview.py -d ${contextual_data} -n ${tree} -o ${output_value} -t ${arbor_view}
     """
 
 
