@@ -3,10 +3,12 @@
 
 
 nextflow.enable.dsl = 2
+nextflow.enable.moduleBinaries = true
 
 // Module imports
 include { PROFILE_DISTS } from "./modules/local/profile_dists.nf"
 include { GAS_MCLUSTER } from "./modules/local/gas_mcluster.nf"
+include { ARBOR_VIEW } from "./modules/local/arborview.nf"
 
 // nf-core modules
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from './modules/nf-core/dumpsoftwareversions/main'
@@ -60,6 +62,11 @@ workflow CLUSTER {
 
     clustered_data = GAS_MCLUSTER(dist_data.results)
     versions = versions.mix(clustered_data.versions)
+
+    tree_data = clustered_data.tree.join(clustered_data.clusters)
+    
+    tree_html = file(params.av_html)
+    ARBOR_VIEW(tree_data, tree_html)
 
     CUSTOM_DUMPSOFTWAREVERSIONS(versions.unique().collectFile(name: 'collated_versions.yml'))
 
