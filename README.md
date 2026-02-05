@@ -2,6 +2,8 @@
 
 A small workflow for denovo clustering of genomic data (e.g. MLST allele calls)
 
+**Note: This is an older repo. The current GSP/IRIDA Next `gasclustering` pipeline is available at <https://github.com/phac-nml/gasclustering>.**
+
 ## Requirements
 
 - Container software (docker, singularity, apptainer, gitpod, wave, charliecloud etc.)
